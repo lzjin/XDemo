@@ -2,6 +2,7 @@ package com.he.skt.kotlin.xdemo.activity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -115,6 +116,9 @@ public class SingleActivity extends AppCompatActivity {
                 Toast.makeText(SingleActivity.this, "item==" + Integer.toString(position), Toast.LENGTH_SHORT).show();
             }
         });
+        //添加头布局
+        View headView=LayoutInflater.from(this).inflate(R.layout.view_header_layout,null);
+        mAdapter.addHeaderView(headView);
     }
 
     private void getDataList() {
