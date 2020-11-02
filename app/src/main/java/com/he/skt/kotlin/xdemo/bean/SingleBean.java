@@ -18,6 +18,10 @@ public class SingleBean {
         this.orgPrice = orgPrice;
     }
 
+    public SingleBean(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
     public String getName() {
         return name;
     }

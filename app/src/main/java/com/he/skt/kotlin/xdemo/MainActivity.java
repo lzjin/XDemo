@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.he.skt.kotlin.xdemo.activity.MoreActivity;
 import com.he.skt.kotlin.xdemo.activity.NestingActivity;
+import com.he.skt.kotlin.xdemo.activity.OverlapActivity;
 import com.he.skt.kotlin.xdemo.activity.SingleActivity;
 
 import butterknife.BindView;
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.btOne, R.id.btTwo,R.id.btThree})
+    @OnClick({R.id.btOne, R.id.btTwo,R.id.btThree,R.id.btFour})
     public void onViewClicked(View view) {
         Intent intent=null;
         switch (view.getId()) {
@@ -38,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.btThree:
                 intent=new Intent(this, NestingActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.btFour:
+                intent=new Intent(this, OverlapActivity.class);
                 startActivity(intent);
                 break;
         }

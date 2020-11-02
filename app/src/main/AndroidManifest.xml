@@ -24,6 +24,7 @@
         <activity android:name=".activity.SingleActivity"/>
         <activity android:name=".activity.MoreActivity"/>
         <activity android:name=".activity.NestingActivity"/>
+        <activity android:name=".activity.OverlapActivity"/>
     </application>
 
 </manifest>

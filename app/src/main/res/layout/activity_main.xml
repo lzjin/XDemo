@@ -26,5 +26,11 @@
         android:layout_height="wrap_content"
         android:text="嵌套布局"/>
 
+    <Button
+        android:id="@+id/btFour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="叠加头像"/>
+
 
 </LinearLayout>
