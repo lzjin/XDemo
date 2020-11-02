@@ -22,29 +22,12 @@ public class NestingAdapter extends BaseMultiItemQuickAdapter<NestingMainBean, B
 
     public NestingAdapter(@Nullable List<NestingMainBean> data) {
         super(data);
-        if(data!=null&&data.size()>0){
-            switch (data.get(0).getFunctionType()){
-                case 0:
-                    addItemType(0, R.layout.item_nesting_a);
-                    break;
-                case 1:
-                    addItemType(1, R.layout.item_nesting_b);
-                    break;
-                case 2:
-                    addItemType(2, R.layout.item_nesting_c);
-                    break;
-                case 3:
-                    addItemType(3, R.layout.item_nesting_d);
-                    break;
-                case 4:
-                    addItemType(4, R.layout.item_nesting_e);
-                    break;
-                case 5:
-                    addItemType(5, R.layout.item_nesting_f);
-                    break;
-            }
-
-        }
+        addItemType(0, R.layout.item_nesting_a);
+        addItemType(1, R.layout.item_nesting_b);
+        addItemType(2, R.layout.item_nesting_c);
+        addItemType(3, R.layout.item_nesting_d);
+        addItemType(4, R.layout.item_nesting_e);
+        addItemType(5, R.layout.item_nesting_f);
     }
 
     @Override
@@ -52,40 +35,88 @@ public class NestingAdapter extends BaseMultiItemQuickAdapter<NestingMainBean, B
         // 第三步：设置不同布局下的组件数据
         switch (helper.getItemViewType()) {
             case 0:
-                helper.setText(R.id.tv_date, "润四月十二");
+                helper.setText(R.id.tv_date, "润六月十九");
+                helper.setText(R.id.tv_day, "30");
+                helper.addOnClickListener(R.id.tvTest);
+                helper.addOnClickListener(R.id.tv_day);
                 break;
             case 1:
                 helper.setText(R.id.tvSdb1, "每日推荐");
                 helper.setText(R.id.tvSdb2, "最佳销量");
+                helper.addOnClickListener(R.id.tvSdb1);
+                helper.addOnClickListener(R.id.tvSdb2);
                 break;
-            case 2:// c
+            case 2:// c 健康自评
                 RecyclerView ry_c = helper.getView(R.id.recylerView);
+                ry_c.setNestedScrollingEnabled(false);
                 NestingCAdapter c_Adapter=new NestingCAdapter(item.getList());
-                ry_c.addItemDecoration(new RecyclerViewDivider(mContext, LinearLayoutManager.VERTICAL, DimenUtil.dipTopx(mContext, 10), mContext.getResources().getColor(R.color.whiles)));
+                //避免间距逐渐增加
+                if (ry_c.getItemDecorationCount() == 0 ) {
+                  //  ry_c.addItemDecoration(new RecyclerViewDivider(mContext, LinearLayoutManager.VERTICAL, DimenUtil.dipTopx(mContext, 10), mContext.getResources().getColor(R.color.whiles)));
+                }
                 ry_c.setLayoutManager(new GridLayoutManager(mContext, 4, RecyclerView.VERTICAL, false));
                 ry_c.setAdapter(c_Adapter);
                 break;
-            case 3: // d
+            case 3: // d  调养妙方
                 RecyclerView ry_d = helper.getView(R.id.recylerView);
+                ry_d.setNestedScrollingEnabled(false);
                 NestingDAdapter d_Adapter=new NestingDAdapter(item.getList());
-                ry_d.addItemDecoration(new RecyclerViewDivider(mContext, LinearLayoutManager.HORIZONTAL, DimenUtil.dipTopx(mContext, 10), mContext.getResources().getColor(R.color.whiles)));
-                ry_d.setLayoutManager(new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false));
+                d_Adapter.setMyClickListener(new NestingDAdapter.OnMyClickListener() {
+                    @Override
+                    public void onMyClick(int position) {
+                        if(mClickListener!=null){
+                            mClickListener.onMyClick(3,position);
+                        }
+                    }
+                });
+                //避免间距逐渐增加
+                if (ry_d.getItemDecorationCount() == 0 ) {
+                    ry_d.addItemDecoration(new RecyclerViewDivider(mContext, LinearLayoutManager.VERTICAL, DimenUtil.dipTopx(mContext, 10), mContext.getResources().getColor(R.color.whiles)));
+                }
+                ry_d.setLayoutManager(new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false));
                 ry_d.setAdapter(d_Adapter);
                 break;
-            case 4://e
+            case 4://e  健康运动
+                helper.setText(R.id.tvSport, "健康运动2");
+                helper.addOnClickListener(R.id.tvSport);
                 RecyclerView ry_e = helper.getView(R.id.recylerView);
+                ry_e.setNestedScrollingEnabled(false);
                 NestingEAdapter e_Adapter=new NestingEAdapter(item.getList());
-                ry_e.addItemDecoration(new RecyclerViewDivider(mContext, LinearLayoutManager.VERTICAL, DimenUtil.dipTopx(mContext, 10), mContext.getResources().getColor(R.color.whiles)));
+                //避免间距逐渐增加
+                if (ry_e.getItemDecorationCount() == 0 ) {
+                  //  ry_e.addItemDecoration(new RecyclerViewDivider(mContext, LinearLayoutManager.VERTICAL, DimenUtil.dipTopx(mContext, 10), mContext.getResources().getColor(R.color.whiles)));
+                }
                 ry_e.setLayoutManager(new GridLayoutManager(mContext, 2, RecyclerView.VERTICAL, false));
                 ry_e.setAdapter(e_Adapter);
                 break;
-            case 5:
+            case 5://f 形态时段
                 RecyclerView ry_f= helper.getView(R.id.recylerView);
                 NestingFAdapter f_Adapter=new NestingFAdapter(item.getList());
-                ry_f.addItemDecoration(new RecyclerViewDivider(mContext, LinearLayoutManager.HORIZONTAL, DimenUtil.dipTopx(mContext, 10), mContext.getResources().getColor(R.color.whiles)));
+                //避免间距逐渐增加
+                if (ry_f.getItemDecorationCount() == 0 ) {
+                    ry_f.addItemDecoration(new RecyclerViewDivider(mContext, LinearLayoutManager.HORIZONTAL, DimenUtil.dipTopx(mContext, 10), mContext.getResources().getColor(R.color.whiles)));
+                }
                 ry_f.setLayoutManager(new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false));
                 ry_f.setAdapter(f_Adapter);
                 break;
         }
     }
+    /**
+     * 按钮监听对外接口
+     */
+    public static interface OnMyClickListener {
+        void onMyClick(int group,int position);
+    }
+
+    /**
+     * 监听
+     */
+    private OnMyClickListener mClickListener;
+    /**
+     * 监听
+     */
+    public void setMyClickListener(OnMyClickListener listener) {
+        mClickListener = listener;
+    }
+
 }

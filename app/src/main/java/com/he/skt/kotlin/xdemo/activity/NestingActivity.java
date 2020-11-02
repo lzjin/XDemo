@@ -85,43 +85,78 @@ public class NestingActivity extends AppCompatActivity {
 
     private void dataDownRefresh() {
         page = 1;
-        getDataList();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getDataList();
+            }
+        }).start();
     }
 
     private void dataUpMore() {
         page++;
-        getDataList();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getDataList();
+            }
+        }).start();
     }
 
     private void initRV() {
         mData = new ArrayList<>();
         mAdapter = new NestingAdapter(mData);
-        recylerView.addItemDecoration(new RecyclerViewDivider(this, LinearLayoutManager.HORIZONTAL,
-                DimenUtil.dipTopx(this, 10), this.getResources().getColor(R.color.light_gray)));
         recylerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recylerView.setNestedScrollingEnabled(false);//解决滑动不流畅
         recylerView.setAdapter(mAdapter);
 
         mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN); //开启动画 效果 SCALEIN
         mAdapter.isFirstOnly(false); //仅第一次刷新动画
-
+        mAdapter.setMyClickListener(new NestingAdapter.OnMyClickListener() {
+            @Override
+            public void onMyClick(int group, int position) {
+                switch (group){
+                    case 3:
+                         Toast.makeText(NestingActivity.this, "Child点击3,== " + position, Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        });
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                Toast.makeText(NestingActivity.this, "Child点击" + position, Toast.LENGTH_SHORT).show();
+                switch (position){
+                    case 0:
+                        if(view.getId()==R.id.tvTest){
+                            Toast.makeText(NestingActivity.this, "Child点击测试" , Toast.LENGTH_SHORT).show();
+                        }else if(view.getId()==R.id.tv_day){
+                            Toast.makeText(NestingActivity.this, "Child点击30" , Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+                    case 1:
+                        if(view.getId()==R.id.tvSdb1){
+                            Toast.makeText(NestingActivity.this, "Child点击 每日推荐" , Toast.LENGTH_SHORT).show();
+                        }else if(view.getId()==R.id.tvSdb2){
+                            Toast.makeText(NestingActivity.this, "Child点击 最佳销售" , Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+                    case 4:
+                        if(view.getId()==R.id.tvSport){
+                            Toast.makeText(NestingActivity.this, "Child点击 健康运动" , Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+                }
             }
         });
         recylerView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Toast.makeText(NestingActivity.this, "item==" + Integer.toString(position), Toast.LENGTH_SHORT).show();
+                Toast.makeText(NestingActivity.this, "item==" + position, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void getDataList() {
-        Log.e("testz","-----------page="+page);
-        NestingMainBean bean=new NestingMainBean();
         if (page == 1) {
             mData.clear();
             // type = 0
@@ -142,10 +177,10 @@ public class NestingActivity extends AppCompatActivity {
             List<NestingBean> list3 =new ArrayList<>();
             list3.add(new NestingBean("阴虚体质","https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1604052752&di=d82bf175377928d5dbbbdbb71df84de9&src=http://a3.att.hudong.com/64/52/01300000407527124482522224765.jpg"));
             list3.add(new NestingBean("消化系统","https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1604062837440&di=c3de5c80c84974d751a4673a4f346f97&imgtype=0&src=http%3A%2F%2Fa4.att.hudong.com%2F52%2F52%2F01200000169026136208529565374.jpg"));
-            list3.add(new NestingBean("阳虚体质","http://img.99.com.cn/uploads/190618/432_173523_1.jpg"));
-            list3.add(new NestingBean("重复的发","http://img.99.com.cn/uploads/190618/432_173523_1.jpg"));
-            list3.add(new NestingBean("也认同感","http://img.99.com.cn/uploads/190618/432_173523_1.jpg"));
-            list3.add(new NestingBean("东方故事","http://img.99.com.cn/uploads/190618/432_173523_1.jpg"));
+            list3.add(new NestingBean("阳虚体质","https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1604052752&di=d82bf175377928d5dbbbdbb71df84de9&src=http://a3.att.hudong.com/64/52/01300000407527124482522224765.jpg"));
+            list3.add(new NestingBean("重复的发","https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1604052752&di=d82bf175377928d5dbbbdbb71df84de9&src=http://a3.att.hudong.com/64/52/01300000407527124482522224765.jpg"));
+            list3.add(new NestingBean("也认同感","https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1604052752&di=d82bf175377928d5dbbbdbb71df84de9&src=http://a3.att.hudong.com/64/52/01300000407527124482522224765.jpg"));
+            list3.add(new NestingBean("东方故事","https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1604052752&di=d82bf175377928d5dbbbdbb71df84de9&src=http://a3.att.hudong.com/64/52/01300000407527124482522224765.jpg"));
             mData.add(new NestingMainBean(3,list3));
             // type = 4
             List<NestingBean> list4 =new ArrayList<>();
@@ -157,31 +192,37 @@ public class NestingActivity extends AppCompatActivity {
 
             // type = 5
             List<NestingBean> list5 =new ArrayList<>();
-            list5.add(new NestingBean("8分钟简单高效瘦胳膊运动","https://img.ougo.ltd/Fkvz-2NjDMZ4wqthPqP-ngCtdpob"));
-            list5.add(new NestingBean("太极拳24式，第一式，起势","https://img.ougo.ltd/Fvtnz46ul_apUiBNPL0N17Y50Kp4"));
-            list5.add(new NestingBean("早晨瑜伽，精神一整天","https://img.ougo.ltd/Fvhzeoox2lGu120QBb376TaFpfYH"));
-            list5.add(new NestingBean("手部穴位认识","https://img.ougo.ltd/Fvtnz46ul_apUiBNPL0N17Y50Kp4"));
+            list5.add(new NestingBean("8分钟简单高效瘦胳膊运动","https://img.ougo.ltd/Fkvz-2NjDMZ4wqthPqP-ngCtdpob","55","99"));
+            list5.add(new NestingBean("太极拳24式，第一式，起势","https://img.ougo.ltd/Fvtnz46ul_apUiBNPL0N17Y50Kp4","55","99"));
+            list5.add(new NestingBean("早晨瑜伽，精神一整天","https://img.ougo.ltd/Fvhzeoox2lGu120QBb376TaFpfYH","55","99"));
+            list5.add(new NestingBean("手部穴位认识","https://img.ougo.ltd/Fvtnz46ul_apUiBNPL0N17Y50Kp4","55","99"));
             mData.add(new NestingMainBean(5,list5));
         }else {
-
+            // type = 5
+            List<NestingBean> list5 =new ArrayList<>();
+            list5.add(new NestingBean("更新效瘦运动xxx","https://img.ougo.ltd/Fkvz-2NjDMZ4wqthPqP-ngCtdpob","29","89"));
+            list5.add(new NestingBean("更新效瘦运动xxx","https://img.ougo.ltd/Fvtnz46ul_apUiBNPL0N17Y50Kp4","29","89"));
+            list5.add(new NestingBean("更新效瘦运动xxx","https://img.ougo.ltd/Fvhzeoox2lGu120QBb376TaFpfYH","29","89"));
+            list5.add(new NestingBean("更新效瘦运动xxx","https://img.ougo.ltd/Fvtnz46ul_apUiBNPL0N17Y50Kp4","29","89"));
+            if(mData.get(mData.size()-1).getItemType()==5){
+                mData.get(mData.size()-1).getList().addAll(list5);
+            }
         }
 
-        for (int i = 0; i < (page == 1 ? 8 : 3); i++) {
-//            if (page == 1) {
-//                mData.add(new NestingBean("龙蛋蛋白石费分时段", "https://img.ougo.ltd/FmJ5E9-shKB7Suj3iy0gJkiSeEWK", "¥22" + i, "¥34" + i));
-//            } else {
-//                mData.add(new NestingBean("更多数据老胜多负少", "https://img.ougo.ltd/FqDV-hb2yc1SwNAoqAs8U_C-dImg", "¥62" + i, "¥83" + i));
-//            }
-        }
-        if (page == 1) {
-            //mAdapter.setNewData(mData);
-            mAdapter.notifyDataSetChanged();
-            refreshLayout.finishRefresh(1500);
-        } else {
-            // mAdapter.addData(mData);
-            mAdapter.notifyDataSetChanged();
-            refreshLayout.finishLoadMore(1500);
-        }
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (page == 1) {
+                    mAdapter.setNewData(mData);
+                    mAdapter.notifyDataSetChanged();
+                    refreshLayout.finishRefresh(1500);
+                } else {
+                    // mAdapter.addData(mData);
+                    mAdapter.notifyDataSetChanged();
+                    refreshLayout.finishLoadMore(1500);
+                }
+            }
+        });
 
     }
 

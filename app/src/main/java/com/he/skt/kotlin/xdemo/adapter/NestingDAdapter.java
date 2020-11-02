@@ -1,5 +1,7 @@
 package com.he.skt.kotlin.xdemo.adapter;
 
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -28,9 +30,34 @@ public class NestingDAdapter extends BaseQuickAdapter<NestingBean, BaseViewHolde
         RoundedImageView imgGoods = helper.getView(R.id.iv_cover);
         Glide.with(mContext).load(item.getImgUrl()).into(imgGoods);
 
-        helper.setText(R.id.tv_name,"");
-        //单独事件
-        helper.addOnClickListener(R.id.iv_cover);
+        helper.setText(R.id.tv_name,item.getName());
+        helper.getView(R.id.tv_name).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mClickListener!=null){
+                    mClickListener.onMyClick(helper.getLayoutPosition());
+                }
+            }
+        });
+
     }
+
+    /**
+     * 按钮监听对外接口
+     */
+    public static interface OnMyClickListener {
+        void onMyClick(int position);
+    }
+    /**
+     * 监听
+     */
+    private OnMyClickListener mClickListener;
+    /**
+     * 监听
+     */
+    public void setMyClickListener(OnMyClickListener listener) {
+        mClickListener = listener;
+    }
+
 }
 

@@ -23,7 +23,7 @@ import java.util.List;
 public class NestingFAdapter extends BaseQuickAdapter<NestingBean, BaseViewHolder> {
 
     public NestingFAdapter(@Nullable List<NestingBean> data) {
-        super(R.layout.item_single_list, data);
+        super(R.layout.item_nesting_f_recy_item, data);
     }
 
     @Override
