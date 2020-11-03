@@ -25,6 +25,7 @@ import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.listener.OnItemDragListener;
 import com.chad.library.adapter.base.listener.OnItemSwipeListener;
+import com.guanaj.easyswipemenulibrary.EasySwipeMenuLayout;
 import com.he.skt.kotlin.xdemo.R;
 import com.he.skt.kotlin.xdemo.adapter.DraggableAdapter;
 import com.he.skt.kotlin.xdemo.adapter.SingleAdapter;
@@ -102,7 +103,30 @@ public class DraggableActivity extends AppCompatActivity {
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                Toast.makeText(DraggableActivity.this, "Child点击" + position, Toast.LENGTH_SHORT).show();
+                switch (view.getId()){
+                    case R.id.img_goods:
+                        Toast.makeText(DraggableActivity.this, "Child点击图片" + position, Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.tvLeftShare:
+                        Toast.makeText(DraggableActivity.this, "Child点击分享" + position, Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.tvRightDel:
+                        Toast.makeText(DraggableActivity.this, "Child点击删除" + position, Toast.LENGTH_SHORT).show();
+                       // mAdapter.remove(position);
+                       // mAdapter.notifyDataSetChanged();
+                        break;
+                    case R.id.tvRightMenu:
+                        Toast.makeText(DraggableActivity.this, "Child点击收藏" + position, Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        });
+        mAdapter.setMyClickListener(new DraggableAdapter.OnMyClickListener() {
+            @Override
+            public void onMyClick(int position, EasySwipeMenuLayout swipeMenuLayout) {
+                swipeMenuLayout.resetStatus();//关闭侧滑
+                // mAdapter.remove(position);
+                // mAdapter.notifyDataSetChanged();
             }
         });
         recylerView.addOnItemTouchListener(new OnItemClickListener() {
@@ -112,94 +136,7 @@ public class DraggableActivity extends AppCompatActivity {
             }
         });
 
-        // 拖拽监听
-        ItemDragAndSwipeCallback itemDragAndSwipeCallback = new ItemDragAndSwipeCallback(mAdapter);
-        //滑动配置  方向
-        itemDragAndSwipeCallback.setDragMoveFlags(ItemTouchHelper.START );
-        //长按拖动
-        //  itemDragAndSwipeCallback.setDragMoveFlags(ItemTouchHelper.UP | ItemTouchHelper.DOWN);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
-        //拖动事件附加到recylerView  必加
-        itemTouchHelper.attachToRecyclerView(recylerView);
 
-
-        mAdapter.enableDragItem(itemTouchHelper);
-        mAdapter.setOnItemDragListener(new OnItemDragListener() {
-            @Override
-            public void onItemDragStart(RecyclerView.ViewHolder viewHolder, int pos) {
-
-            }
-
-            @Override
-            public void onItemDragMoving(RecyclerView.ViewHolder viewHolder, int from, RecyclerView.ViewHolder viewHolder1, int to) {
-                Log.e("testz","---------------from="+from+"------------to="+to);
-            }
-
-            @Override
-            public void onItemDragEnd(RecyclerView.ViewHolder viewHolder, int pos) {
-
-            }
-        });
-
-        // 开启滑动删除
-        mAdapter.enableSwipeItem();
-        mAdapter.setOnItemSwipeListener(new OnItemSwipeListener() {
-            @Override
-            public void onItemSwipeStart(RecyclerView.ViewHolder viewHolder, int pos) {
-                Log.e("testz", "-------drag start");
-                final BaseViewHolder holder = ((BaseViewHolder) viewHolder);
-
-                // 开始时，item背景色变化，demo这里使用了一个动画渐变，使得自然
-                int startColor = Color.WHITE;
-                int endColor = Color.rgb(245, 245, 245);
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                    ValueAnimator v = ValueAnimator.ofArgb(startColor, endColor);
-                    v.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                        @Override
-                        public void onAnimationUpdate(ValueAnimator animation) {
-                            holder.itemView.setBackgroundColor((int)animation.getAnimatedValue());
-                        }
-                    });
-                    v.setDuration(300);
-                    v.start();
-                }
-            }
-
-            @Override
-            public void clearView(RecyclerView.ViewHolder viewHolder, int pos) {
-
-            }
-
-            @Override
-            public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int i) {
-                //侧滑删除可以在这里进行数据更新
-                Toast.makeText(DraggableActivity.this, "删除成功item=" +  i+"  size="+mData.size(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onItemSwipeMoving(Canvas canvas, RecyclerView.ViewHolder viewHolder, float dX, float dY, boolean isCurrentlyActive) {
-                Log.e("testz","---------------dX="+dX+"------------dY="+dY);
-                canvas.drawColor(ContextCompat.getColor(DraggableActivity.this, R.color.colorPrimaryDark));
-                if(DimenUtil.pxTodip(DraggableActivity.this,dX)>50){
-//                    AlertDialog.Builder   builder=new AlertDialog.Builder (DraggableActivity.this);
-//                    builder.setTitle("请回答");
-//                    builder.setMessage("你觉得我好看吗？？");
-//                    builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int i) {
-//                            dialog.dismiss();
-//                        }
-//                    });
-//                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int i) {
-//                            dialog.dismiss();
-//                        }
-//                    });
-//                    builder.show();
-                }
-            }
-        });
     }
 
     private void getDataList() {

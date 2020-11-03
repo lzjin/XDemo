@@ -48,6 +48,8 @@ dependencies {
 
     //高级adapter
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50'
+    //侧滑删除 https://github.com/anzaizai/EasySwipeMenuLayout
+    implementation 'com.github.anzaizai:EasySwipeMenuLayout:1.1.4'
 
     // Glide 图库
     implementation 'com.github.bumptech.glide:glide:4.9.0'
